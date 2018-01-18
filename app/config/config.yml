@@ -2,6 +2,7 @@ imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
     - { resource: services.yml }
+    - { resource: "@ProductsBundle/Resources/config/services.yml" }
 
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
@@ -80,5 +81,8 @@ fos_user:
         group_class: AppBundle\Entity\Group
 
 easy_admin:
+    site_name: 'Ebay'
     entities:
         - AppBundle\Entity\User
+        - ProductsBundle\Entity\Product
+        - ProductsBundle\Entity\Picture

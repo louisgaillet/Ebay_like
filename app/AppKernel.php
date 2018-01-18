@@ -19,6 +19,7 @@ class AppKernel extends Kernel
             new AppBundle\AppBundle(),
             new FOS\UserBundle\FOSUserBundle(),
             new EasyCorp\Bundle\EasyAdminBundle\EasyAdminBundle(),
+            new ProductsBundle\ProductsBundle()
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {
