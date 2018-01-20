@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>{% block title %}Welcome!{% endblock %}</title>
+    {% block stylesheets %}{% endblock %}
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+
+</head>
+<body>
+{% for type, messages in app.session.flashbag.all() %}
+    {% for message in messages %}
+            {{ message }}
+    {% endfor %}
+{% endfor %}
+<div class="container">
+    <div class="row">
+        <div class="col-sm-3 col-md-2 hidden-xs-down bg-faded sidebar ">
+            <h2>Products</h2>
+            <ul class="nav nav-pills flex-column">
+                <li class="nav-item">
+                    <a class="nav-link " href="{{ path('dab-add-product') }}">Add product <span class="sr-only"></span></a>
+                    <a class="nav-link " href="{{ path('dab-list-products') }}">Show <span class="sr-only"></span></a>
+                </li>
+            </ul>
+            <h2>Categories</h2>
+            <ul class="nav  nav-pills flex-column">
+                <li class="nav-item">
+                    <a class="nav-link " href="{{ path('dab-add-category') }}">Add Category <span class="sr-only"></span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="{{ path('dab-list-categories') }}">show Category <span class="sr-only"></span></a>
+                </li>
+            </ul>
+            <h2>Profile</h2>
+            <ul class="nav nav-pills flex-column">
+                <li class="nav-item">
+                    <a class="nav-link " href="#">Edit <span class="sr-only"></span></a>
+                </li>
+            </ul>
+
+
+        </div>
+        <main class="col-sm-9  col-md-10  pt-3">
+        {% block body %}{% endblock %}
+        </main>
+    </div>
+</div>
+{% block javascripts %}{% endblock %}
+<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+</body>
+</html>
+

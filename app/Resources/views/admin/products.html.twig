@@ -1,0 +1,13 @@
+{% extends 'admin/layout.html.twig' %}
+
+
+{% block body %}
+    <div class="errors">
+        {{ form_errors(form) }}
+    </div>
+    {{ form(form) }}
+
+    {{ form_start(form, {attr: {class: 'my-form-class'} }) }}
+    {{ form_widget(form) }}
+    {{ form_end(form) }}
+{% endblock %}

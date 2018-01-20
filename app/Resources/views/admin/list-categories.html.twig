@@ -1,0 +1,19 @@
+{% extends 'admin/layout.html.twig' %}
+
+
+{% block body %}
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+
+            </thead>
+        </table>
+    </div>
+    <ul>
+        {% for category in categories %}
+            <li>{{ category.name|e}}
+                <a href="{{ path('dab-remove-category', {id:category.id}) }}"> Delete</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

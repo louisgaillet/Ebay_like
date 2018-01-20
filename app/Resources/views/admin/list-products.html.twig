@@ -1,0 +1,29 @@
+{% extends 'admin/layout.html.twig' %}
+
+
+{% block body %}
+    <table class="table">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>image</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for product in products %}
+            <tr>
+                <th scope="row">{{ product.id }}</th>
+                <td>{{ product.titre }}</td>
+                <td>{{ product.price }}</td>
+                <td><img src="{{ asset('uploads/images/products/'~product.image|e) }}" alt=""></td>
+            </tr>
+            <li>{{ product.titre|e}}
+                <a href="{{ path('dab-remove-product', {id:product.id}) }}"> Delete</a>
+            </li>
+        {% endfor %}
+
+        </tbody>
+    </table>
+{% endblock %}

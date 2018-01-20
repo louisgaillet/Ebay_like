@@ -8,6 +8,7 @@ imports:
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: en
+    app.path.product_images: /uploads/images/products
 
 framework:
     #esi: ~
@@ -77,12 +78,44 @@ fos_user:
     from_email:
         address: "%mailer_user%"
         sender_name: "%mailer_user%"
-    group:
-        group_class: AppBundle\Entity\Group
+
 
 easy_admin:
     site_name: 'Ebay'
     entities:
-        - AppBundle\Entity\User
-        - ProductsBundle\Entity\Product
-        - ProductsBundle\Entity\Picture
+        Users:
+          class: AppBundle\Entity\User
+          label: 'Users'
+
+        Product:
+          class: ProductsBundle\Entity\Product
+          label: 'Products'
+          list:
+            fields:
+              - titre
+              - price
+              - description
+              - User
+              - Category
+              - { property: 'image', type: 'image', base_path: '%app.path.product_images%' }
+          show:
+            fields:
+              - { property: 'image', type: 'image', base_path: '%app.path.product_images%' }
+          form:
+              fields:
+                  - titre
+                  - price
+                  - description
+                  - User
+                  - { property: 'category', template: 'categories.html.twig' }
+                  - { property: 'imageFile', type: 'file' }
+        Category:
+          class: ProductsBundle\Entity\Category
+          label: 'Category'
+
+vich_uploader:
+    db_driver: orm
+    mappings:
+      product_images:
+        uri_prefix: '%app.path.product_images%'
+        upload_destination: '%kernel.root_dir%/../web/uploads/images/products'
