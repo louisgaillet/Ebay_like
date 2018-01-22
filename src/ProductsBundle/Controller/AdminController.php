@@ -2,8 +2,10 @@
 
 namespace ProductsBundle\Controller;
 
+use AppBundle\Form\UserType;
 use ProductsBundle\Entity\Category;
 use ProductsBundle\Entity\Product;
+use AppBundle\Entity\User;
 use ProductsBundle\Form\CategoryType;
 use ProductsBundle\Form\ProductType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -59,7 +61,7 @@ class AdminController extends Controller
 
         $products = $em
             ->getRepository('ProductsBundle:Product')
-            ->findBy(array('User' => $user->getId()))
+            ->findBy(array('User' => $user->getId()));
         ;
 
 
@@ -153,5 +155,15 @@ class AdminController extends Controller
         return $this->redirectToRoute('dab-list-categories');
     }
 
+
+    /**
+     * @Route("/dashboard/profil")
+     */
+    public function profilAction()
+    {
+
+        $user = new User();
+        //
+    }
 
 }

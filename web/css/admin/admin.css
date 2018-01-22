@@ -1,0 +1,39 @@
+.products_table img{
+    width: 100px;
+}
+
+.admin .sidebar{
+    background: white;
+    color: #3C4858;
+    box-shadow: 0 10px 30px -12px rgba(0, 0, 0, 0.42), 0 4px 25px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2);
+    min-height: 100vh;
+}
+
+.admin .sidebar .wrapper{
+    padding:13px;
+}
+.admin .sidebar h2{
+    font-size: 1rem;
+    text-align: left;
+    margin-top: 13px;
+    background: linear-gradient(60deg, #26c6da, #00acc1);
+    color: white;
+    padding: 6px;
+    margin-bottom: 0;
+}
+
+.admin .sidebar ul {
+    padding-left: 0;
+}
+.admin .sidebar ul li {
+    list-style: none;
+}
+.admin .sidebar a{
+    color: #3C4858;
+    text-decoration: none;
+    transition: all .5s ease;
+}
+
+.admin .sidebar a:hover{
+    background-color: rgba(0,0,0,0.05);
+}

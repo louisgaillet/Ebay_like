@@ -2,26 +2,31 @@
 
 
 {% block body %}
-    <table class="table">
+    <table class="table products_table">
         <thead>
         <tr>
-            <th>#</th>
             <th>Name</th>
             <th>Price</th>
             <th>image</th>
+            <th>Categorie</th>
+            <th>Supprimer</th>
+            <th>Editer</th>
         </tr>
         </thead>
         <tbody>
         {% for product in products %}
             <tr>
-                <th scope="row">{{ product.id }}</th>
                 <td>{{ product.titre }}</td>
-                <td>{{ product.price }}</td>
-                <td><img src="{{ asset('uploads/images/products/'~product.image|e) }}" alt=""></td>
+                <td>{{ product.price }} €</td>
+                <td><img src="{{ asset('uploads/images/products/'~product.image|e )  }}" alt="{{ product.titre }}"></td>
+                <td>
+                    {% for category in product.categories %}
+                        {{ category.name }}
+                    {% endfor %}
+
+                </td>
+                <td> <a href="{{ path('dab-remove-product', {id:product.id}) }}"> Supprimer</a></td>
             </tr>
-            <li>{{ product.titre|e}}
-                <a href="{{ path('dab-remove-product', {id:product.id}) }}"> Delete</a>
-            </li>
         {% endfor %}
 
         </tbody>

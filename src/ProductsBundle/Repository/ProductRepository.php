@@ -10,7 +10,7 @@ namespace ProductsBundle\Repository;
  */
 class ProductRepository extends \Doctrine\ORM\EntityRepository
 {
-    public function getProductsByUser(){
+    public function getProductsByCategory(){
 
 
 

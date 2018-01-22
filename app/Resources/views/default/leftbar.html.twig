@@ -1,0 +1,13 @@
+<div class="col-md-3 left-bar">
+    <ul class="nav_categories block">
+        {% for parentCategory in parentCategories %}
+            <li>{{ parentCategory.getName() | e }}
+                <ul>
+                    {% for childCategory in parentCategory.getChildren() %}
+                        <li>{{ childCategory.getName() | e }}</li>
+                    {% endfor %}
+                </ul>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
