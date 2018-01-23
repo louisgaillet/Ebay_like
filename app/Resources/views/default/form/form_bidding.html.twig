@@ -1,0 +1,10 @@
+<div class="errors">
+    {{ form_errors(form) }}
+</div>
+
+
+{{ form_start(form, {attr: {class: 'bidding-form'} }) }}
+{{ form_row(form.actualBid, {attr:{min:bidding.actualBid + 1}}) }}
+{{ form_widget(form.save) }}
+
+{{ form_end(form) }}

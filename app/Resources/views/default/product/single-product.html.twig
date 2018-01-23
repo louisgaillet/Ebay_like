@@ -20,7 +20,10 @@
                         <p>{{ product.description }}</p>
                         <p class="price">{{ product.price }} €</p>
 
-                        <a href="#" class="primary-btn"> Acheter </a>
+                        <div class="d-flex justify-content-around">
+                            <a href="" class="primary-btn"> Achat immediat </a>
+                            <a href="{{ path('products_default_bind', {'id': product.id}) }}" class="primary-btn"> Enchère </a>
+                        </div>
                     </div>
                 </div>
 

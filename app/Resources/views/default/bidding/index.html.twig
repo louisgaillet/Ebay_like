@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3 left-bar">
+                {{ include('default/leftbar.html.twig') }}
+            </div>
+
+
+            <div class="col-md-9 col-xs-12 content ">
+                <div class="block">
+                    {{ product.titre }}
+                    <div class="bidding">
+                        {{ product.dateEnd | date('d-m-Y') }}
+                        <div>Valeur : {{ product.price }}</div>
+                        <div> Actual {{ bidding.actualBid }}</div>
+                        <div>Minimum {{ product.minBid }}</div>
+                        {{ include('default/form/form_bidding.html.twig', { 'product': product , 'bidding':bidding }) }}
+                    </div>
+                </div>
+            <div>
+        </div>
+    </div>
+{% endblock %}

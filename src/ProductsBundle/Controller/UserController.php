@@ -4,7 +4,7 @@ namespace ProductsBundle\Controller;
 
 use ProductsBundle\Entity\Rates;
 use ProductsBundle\Entity\RatesUser;
-use ProductsBundle\Form\ProductType;
+use ProductsBundle\Form\productType;
 use ProductsBundle\Form\RatesType;
 use ProductsBundle\Form\RatesUserType;
 use ProductsBundle\ProductsBundle;

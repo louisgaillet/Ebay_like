@@ -5,9 +5,11 @@ namespace ProductsBundle\Controller;
 use AppBundle\Form\UserType;
 use ProductsBundle\Entity\Category;
 use ProductsBundle\Entity\Product;
+use ProductsBundle\Entity\Bidding;
 use AppBundle\Entity\User;
 use ProductsBundle\Form\CategoryType;
 use ProductsBundle\Form\ProductType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,7 +38,9 @@ class AdminController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $bindding = new Bidding();
             $product->setUser($this->getUser());
+            $product->setBindding($bindding);
             $em = $this->getDoctrine()->getManager();
             $em->persist($product);
             $em->flush();
@@ -44,7 +48,7 @@ class AdminController extends Controller
             return $this->redirectToRoute('dab-list-products');
         }
 
-        return $this->render('admin/products.html.twig', [
+        return $this->render('admin/products/new.twig', [
             'form' => $form->createView(),
         ]);
     }
@@ -61,14 +65,45 @@ class AdminController extends Controller
 
         $products = $em
             ->getRepository('ProductsBundle:Product')
-            ->findBy(array('git => $user->getId()));
+            ->findBy(array('User' => $user->getId()));
         ;
 
 
-        return $this->render('admin/list-products.html.twig', [
+        return $this->render('admin/products/list-products.html.twig', [
             'products' => $products,
         ]);
     }
+
+    /**
+     * Displays a form to edit an existing product entity.
+     *
+     * @Route("dashboard/product/{id}/edit", name="product_edit")
+     * @Method({"GET", "POST"})
+     */
+
+    public function editAction(Request $request, $id)
+    {
+        $doctrine = $this->getDoctrine();
+        $em = $doctrine->getManager();
+        $repository = $doctrine->getRepository('ProductsBundle:Product');
+
+        $product = $repository->find($id);
+
+        $editForm = $this->createForm('ProductsBundle\Form\ProductType', $product);
+        $editForm->handleRequest($request);
+
+        if ($editForm->isSubmitted() && $editForm->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+
+            return $this->redirectToRoute('product_edit', array('id' => $product->getId()));
+        }
+
+        return $this->render('admin/products/edit.html.twig', array(
+            'product' => $product,
+            'edit_form' => $editForm->createView(),
+        ));
+    }
+
 
 
     /**
@@ -111,11 +146,12 @@ class AdminController extends Controller
         }
 
 
-        return $this->render('admin/products.html.twig', [
+        return $this->render('admin/categories/new.html.twig', [
             'form' => $form->createView(),
         ]);
 
     }
+
 
     /**
      * @Route("/dashboard/category/list", name="dab-list-categories")
@@ -165,5 +201,6 @@ class AdminController extends Controller
         $user = new User();
         //
     }
+
 
 }

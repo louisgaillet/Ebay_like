@@ -2,11 +2,15 @@
 
 namespace ProductsBundle\Form;
 
+use Doctrine\DBAL\Types\IntegerType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class RatesUserType extends AbstractType
+class BiddingType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -14,16 +18,17 @@ class RatesUserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('score')
-            ->add('description')
-            ->add('save', Su::class, ['label' => 'Publier mon avis']);
+            ->add('actualBid', null,[
+                'label' => "Mon enchére"
+            ] )
+            ->add('save', SubmitType::class, ['label' => "J'enchéris !"]);
     }/**
      * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'ProductsBundle\Entity\RatesUser'
+            'data_class' => 'ProductsBundle\Entity\Bidding'
         ));
     }
 
@@ -32,7 +37,7 @@ class RatesUserType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'productsbundle_ratesuser';
+        return 'productsbundle_bidding';
     }
 
 

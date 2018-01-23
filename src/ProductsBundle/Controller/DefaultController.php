@@ -2,7 +2,9 @@
 
 namespace ProductsBundle\Controller;
 
+use ProductsBundle\Entity\Bidding;
 use ProductsBundle\Entity\Rates;
+use ProductsBundle\Form\BiddingType;
 use ProductsBundle\Form\RatesType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -109,6 +111,48 @@ class DefaultController extends Controller
         return $this->render('default/index.html.twig', [
             'parentCategories' => $categories,
             'products' => $query,
+        ]);
+    }
+
+
+    /**
+     * @Route("/bidding/{id}"), name="bidding")
+     *
+     */
+    public function bindAction(Request $request, $id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $repository = $this->getDoctrine()->getRepository('ProductsBundle:Bidding');
+
+        $categories = $em
+            ->getRepository('ProductsBundle:Category')
+            ->findBy(array('parent' => null));
+        ;
+
+        $product = $em
+            ->getRepository('ProductsBundle:Product')
+            ->find($id);
+
+        $actualBidding = $repository->find($product->getBindding());
+
+        $bidding = new Bidding();
+        $form = $this->get('form.factory')->create(BiddingType::class, $bidding);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            dump($form);
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($bidding);
+            $em->flush();
+            $request->getSession()->getFlashBag()->add('notice', 'Product has been created.');
+        }
+
+        return $this->render('default/bidding/index.html.twig', [
+            'parentCategories' => $categories,
+            'product'          => $product,
+            'bidding'             => $actualBidding,
+            'form'             => $form->createView()
         ]);
     }
 }

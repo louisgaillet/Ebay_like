@@ -25,6 +25,13 @@ class Product
     private $User;
 
     /**
+     * @ORM\ManyToOne(targetEntity="ProductsBundle\Entity\Bidding", cascade={"persist"})
+     * @ORM\JoinColumn(nullable=true)
+     */
+
+    private $Bindding;
+
+    /**
      * @ORM\ManyToMany(targetEntity="ProductsBundle\Entity\Category", cascade={"persist"})
      */
     private $categories;
@@ -377,5 +384,29 @@ class Product
     public function getDateEnd()
     {
         return $this->dateEnd;
+    }
+
+    /**
+     * Set bindding.
+     *
+     * @param \ProductsBundle\Entity\Bidding|null $bindding
+     *
+     * @return Product
+     */
+    public function setBindding(\ProductsBundle\Entity\Bidding $bindding = null)
+    {
+        $this->Bindding = $bindding;
+
+        return $this;
+    }
+
+    /**
+     * Get bindding.
+     *
+     * @return \ProductsBundle\Entity\Bidding|null
+     */
+    public function getBindding()
+    {
+        return $this->Bindding;
     }
 }

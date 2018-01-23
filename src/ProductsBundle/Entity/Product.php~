@@ -25,6 +25,13 @@ class Product
     private $User;
 
     /**
+     * @ORM\ManyToOne(targetEntity="ProductsBundle\Entity\Bidding")
+     * @ORM\JoinColumn(nullable=true)
+     */
+
+    private $Bindding;
+
+    /**
      * @ORM\ManyToMany(targetEntity="ProductsBundle\Entity\Category", cascade={"persist"})
      */
     private $categories;
@@ -94,7 +101,7 @@ class Product
     private $updatedAt;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      * @var \DateTime
      */
     private $dateEnd;

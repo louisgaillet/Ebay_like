@@ -19,6 +19,11 @@ class User extends BaseUser
      */
     protected $id;
 
+    /**
+     * @ORM\Column(name="adresse", type="string", length=255)
+     */
+    private $adresse;
+
 
     public function __construct()
     {
