@@ -1,0 +1,6 @@
+<a href="{{ path('products_default_single', {'id': product.id}) }}" class="col-md-4 col-sm-6 col-xs-12 item-product">
+    <figure>
+        <img src="{{ asset('uploads/images/products/'~product.image|e )  }}" alt="{{ product.titre }}">
+        <figcaption>{{ product.titre }} <span class="price"> € {{ product.price }}</span></figcaption>
+    </figure>
+</a>

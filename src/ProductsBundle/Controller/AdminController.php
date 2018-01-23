@@ -61,7 +61,7 @@ class AdminController extends Controller
 
         $products = $em
             ->getRepository('ProductsBundle:Product')
-            ->findBy(array('User' => $user->getId()));
+            ->findBy(array('git => $user->getId()));
         ;
 
 

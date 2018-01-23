@@ -1,0 +1,21 @@
+
+{% if rates is empty %}
+    <p>Aucun avis pour le moment</p>
+{% else %}
+    {% for rate in rates %}
+        <div class="item-rate col-xs-12">
+            <div class="header-item-rate">
+                <div>
+                    <span class="font-weight-bold">{{ rate.user.username }}</span>
+                    <span class="date">{{ rate.date|date('d-m-Y') }}</span>
+                </div>
+                <div>
+                    {{ rate.score}} / 5
+                </div>
+            </div>
+            <div class="description">
+                {{ rate.description }}
+            </div>
+        </div>
+    {% endfor %}
+{% endif %}

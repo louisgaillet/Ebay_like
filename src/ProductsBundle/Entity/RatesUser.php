@@ -6,20 +6,20 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Rates
+ * RatesUser
  *
- * @ORM\Table(name="rates")
- * @ORM\Entity(repositoryClass="ProductsBundle\Repository\RatesRepository")
+ * @ORM\Table(name="rates_user")
+ * @ORM\Entity(repositoryClass="ProductsBundle\Repository\RatesUserRepository")
  */
-class Rates
+class RatesUser
 {
 
     /**
-     * @ORM\ManyToOne(targetEntity="ProductsBundle\Entity\Product")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
      * @ORM\JoinColumn(nullable=false)
      */
 
-    private $Product;
+    private $Owner;
 
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
@@ -45,6 +45,8 @@ class Rates
 
     private $score;
 
+
+
     /**
      * @var string|null
      *
@@ -53,8 +55,9 @@ class Rates
     private $description;
 
     /**
-     * @ORM\Column(type="datetime")
      * @var \DateTime
+     *
+     * @ORM\Column(name="date", type="datetime")
      */
     private $date;
 
@@ -79,7 +82,7 @@ class Rates
      *
      * @param int $score
      *
-     * @return Rates
+     * @return RatesUser
      */
     public function setScore($score)
     {
@@ -96,6 +99,7 @@ class Rates
     public function getScore()
     {
         return $this->score;
+
     }
 
     /**
@@ -103,7 +107,7 @@ class Rates
      *
      * @param string|null $description
      *
-     * @return Rates
+     * @return RatesUser
      */
     public function setDescription($description = null)
     {
@@ -123,62 +127,11 @@ class Rates
     }
 
     /**
-     * Set user
-     *
-     * @param \AppBundle\Entity\User $user
-     *
-     * @return Rates
-     */
-
-    public function setUser(\AppBundle\Entity\User $user)
-    {
-        $this->User = $user;
-
-        return $this;
-    }
-
-    /**
-     * Get user
-     *
-     * @return \AppBundle\Entity\User
-     */
-    public function getUser()
-    {
-        return $this->User;
-    }
-
-
-
-    /**
-     * Set product.
-     *
-     * @param \ProductsBundle\Entity\Product $product
-     *
-     * @return Rates
-     */
-    public function setProduct(\ProductsBundle\Entity\Product $product)
-    {
-        $this->Product = $product;
-
-        return $this;
-    }
-
-    /**
-     * Get product.
-     *
-     * @return \ProductsBundle\Entity\Product
-     */
-    public function getProduct()
-    {
-        return $this->Product;
-    }
-
-    /**
      * Set date.
      *
      * @param \DateTime $date
      *
-     * @return Rates
+     * @return RatesUser
      */
     public function setDate($date)
     {
@@ -195,5 +148,53 @@ class Rates
     public function getDate()
     {
         return $this->date;
+    }
+
+    /**
+     * Set owner.
+     *
+     * @param \AppBundle\Entity\User $owner
+     *
+     * @return RatesUser
+     */
+    public function setOwner(\AppBundle\Entity\User $owner)
+    {
+        $this->Owner = $owner;
+
+        return $this;
+    }
+
+    /**
+     * Get owner.
+     *
+     * @return \AppBundle\Entity\User
+     */
+    public function getOwner()
+    {
+        return $this->Owner;
+    }
+
+    /**
+     * Set user.
+     *
+     * @param \AppBundle\Entity\User $user
+     *
+     * @return RatesUser
+     */
+    public function setUser(\AppBundle\Entity\User $user)
+    {
+        $this->User = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user.
+     *
+     * @return \AppBundle\Entity\User
+     */
+    public function getUser()
+    {
+        return $this->User;
     }
 }

@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+    <div class="container-fluid">
+
+        <div class="row">
+            <div class="col-md-3">
+                <div class="block">
+                    <p class="title">La boutique de {{ user.username }}</p>
+                    <div class="wrapper-rates-users">
+                        <div class="rates">
+                            {{include('default/rates/template-rates.html.twig', { 'rates': rates }) }}
+                        </div>
+                    </div>
+
+                    {% if app.user %}
+                        {{ include('default/form/form.html.twig') }}
+                    {% else %}
+                        <span>Vous devez vous <a href="{{ path('fos_user_registration_register') }}">connecter</a> pour poster un avis</span>
+                    {% endif %}
+                </div>
+            </div>
+            <div class=" col-md-9 col-xs-12 content">
+                <div class="wrapper-product ">
+                    {% for product in products %}
+                        {{ include('default/product/list-product.html.twig', { 'product': product }) }}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+

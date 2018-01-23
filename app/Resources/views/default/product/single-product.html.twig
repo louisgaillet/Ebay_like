@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3 left-bar">
+                {{ include('default/leftbar.html.twig') }}
+            </div>
+
+
+            <div class="col-md-9 col-xs-12 content ">
+                <div class=" wrapper-product block">
+                    <div class="col-md-4">
+                        <img src="{{ asset('uploads/images/products/'~product.image|e )  }}" alt="{{ product.titre }}">
+                    </div>
+                    <div class="col-md-8">
+                        <h1>{{ product.titre }}</h1>
+                        <a href="{{ path('products_user_index', {'id': product.user.id}) }}"><p class="author">{{ product.user.username }}</p></a>
+                        <p>{{ product.description }}</p>
+                        <p class="price">{{ product.price }} €</p>
+
+                        <a href="#" class="primary-btn"> Acheter </a>
+                    </div>
+                </div>
+
+                <div class="rates block ">
+                    <h2>Avis pour {{ product.titre }}</h2>
+                    {{ include('default/rates/template-rates.html.twig', { 'rates': rates }) }}
+                    {% if app.user %}
+                        {{ include('default/form/form.html.twig') }}
+                    {% else %}  
+                        <span>Vous devez vous <a href="{{ path('fos_user_registration_register') }}">connecter</a> pour poster un avis</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

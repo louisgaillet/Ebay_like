@@ -35,7 +35,10 @@
         "symfony/symfony": "3.4.*",
         "symfony/var-dumper": "^4.0",
         "twig/twig": "^1.0||^2.0",
-        "vich/uploader-bundle": ">=1.8.1"
+        "vich/uploader-bundle": ">=1.8.1",
+        "symfony/assetic-bundle": "^2.7.1",
+        "leafo/scssphp": "~0.6",
+        "patchwork/jsqueeze": "~1.0"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",

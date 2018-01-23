@@ -48,9 +48,23 @@ class Product
     /**
      * @var int
      *
-     * @ORM\Column(name="price", type="integer")
+     * @ORM\Column(name="price", type="float")
      */
     private $price;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="startingPrice", type="float")
+     */
+    private $startingPrice;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="minBid", type="float")
+     */
+    private $minBid;
 
     /**
      * @var string
@@ -78,6 +92,12 @@ class Product
      * @var \DateTime
      */
     private $updatedAt;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     * @var \DateTime
+     */
+    private $dateEnd;
 
 
 
@@ -281,5 +301,81 @@ class Product
     public function getCategories()
     {
         return $this->categories;
+    }
+
+
+
+    /**
+     * Set minBid.
+     *
+     * @param float $minBid
+     *
+     * @return Product
+     */
+    public function setMinBid($minBid)
+    {
+        $this->minBid = $minBid;
+
+        return $this;
+    }
+
+    /**
+     * Get minBid.
+     *
+     * @return float
+     */
+    public function getMinBid()
+    {
+        return $this->minBid;
+    }
+
+
+
+    /**
+     * Set startingPrice.
+     *
+     * @param float $startingPrice
+     *
+     * @return Product
+     */
+    public function setStartingPrice($startingPrice)
+    {
+        $this->startingPrice = $startingPrice;
+
+        return $this;
+    }
+
+    /**
+     * Get startingPrice.
+     *
+     * @return float
+     */
+    public function getStartingPrice()
+    {
+        return $this->startingPrice;
+    }
+
+    /**
+     * Set dateEnd.
+     *
+     * @param \DateTime $dateEnd
+     *
+     * @return Product
+     */
+    public function setDateEnd($dateEnd)
+    {
+        $this->dateEnd = $dateEnd;
+
+        return $this;
+    }
+
+    /**
+     * Get dateEnd.
+     *
+     * @return \DateTime
+     */
+    public function getDateEnd()
+    {
+        return $this->dateEnd;
     }
 }

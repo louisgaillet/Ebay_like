@@ -69,15 +69,15 @@ class DefaultController extends Controller
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($rate);
                 $em->flush();
-                $request->getSession()->getFlashBag()->add('notice', 'Le commentaire à bien été ajouté');
+                $request->getSession()->getFlashBag()->add('sucess', 'Le commentaire à bien été ajouté');
                 return $this->redirectToRoute('products_default_single', array('id' => $id));
             }else{
-                $request->getSession()->getFlashBag()->add('notice', 'Vous ne pouvez pas commenter vos propres produits.');
+                $request->getSession()->getFlashBag()->add('danger', 'Vous ne pouvez pas commenter vos propres produits.');
                 return $this->redirectToRoute('products_default_single', array('id' => $id));
             }
         }
 
-        return $this->render('default/single-product.html.twig', [
+        return $this->render('default/product/single-product.html.twig', [
             'parentCategories' => $categories,
             'product' => $product,
             'rates' => $rates,
@@ -92,20 +92,23 @@ class DefaultController extends Controller
     public function categoriesAction(Request $request, $id)
     {
         $em = $this->getDoctrine()->getManager();
-        $repository = $this->getDoctrine()->getRepository('ProductsBundle:Category');
+        $repository = $this->getDoctrine()->getRepository('ProductsBundle:Product');
 
         $categories = $em
             ->getRepository('ProductsBundle:Category')
             ->findBy(array('parent' => null));
         ;
 
-        $products = $em
-            ->getRepository('ProductsBundle:Product')
-            ->findBy(array('User' => $user->getId()));
+
+        $query = $repository->createQueryBuilder('u')
+            ->innerJoin('u.categories', 'g')
+            ->where('g.id = :category_id')
+            ->setParameter('category_id', $id)
+            ->getQuery()->getResult();
 
         return $this->render('default/index.html.twig', [
             'parentCategories' => $categories,
-            'products' => $products,
+            'products' => $query,
         ]);
     }
 }
