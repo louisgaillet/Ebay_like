@@ -3,8 +3,10 @@
 namespace ProductsBundle\Controller;
 
 use ProductsBundle\Entity\Bidding;
+use ProductsBundle\Entity\history_bidding;
 use ProductsBundle\Entity\Rates;
 use ProductsBundle\Form\BiddingType;
+use ProductsBundle\Form\history_biddingType;
 use ProductsBundle\Form\RatesType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -121,38 +123,55 @@ class DefaultController extends Controller
      */
     public function bindAction(Request $request, $id)
     {
-        $em = $this->getDoctrine()->getManager();
-        $repository = $this->getDoctrine()->getRepository('ProductsBundle:Bidding');
 
+        $em = $this->getDoctrine()->getManager();
         $categories = $em
             ->getRepository('ProductsBundle:Category')
             ->findBy(array('parent' => null));
-        ;
 
         $product = $em
             ->getRepository('ProductsBundle:Product')
             ->find($id);
 
-        $actualBidding = $repository->find($product->getBindding());
+        $bidding = new history_bidding();
+        $form = $this->get('form.factory')->create(history_biddingType::class, $bidding);
 
-        $bidding = new Bidding();
-        $form = $this->get('form.factory')->create(BiddingType::class, $bidding);
+        $history =  $em
+            ->getRepository('ProductsBundle:history_bidding')
+            ->findBy(array('product' => $product->getId()));
+        $history = array_reverse($history);
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            dump($form);
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($bidding);
-            $em->flush();
-            $request->getSession()->getFlashBag()->add('notice', 'Product has been created.');
-        }
+        $minBid = $em
+            ->getRepository('ProductsBundle:history_bidding')
+            ->getlastBid($id);
 
+        if ($minBid == null)
+            $minBid = $product->getStartingPrice();
+        else{
+            $minBid = $minBid["bid"];
+        }
+        $minBid = $minBid + $product->getMinBid();
+        if ($form->isSubmitted() && $form->isValid()) {
+            $biddingManager = $this->get('bidding_manager');
+            $biddingManager->setForm($form)->createForm();
+            if( $form->get('bid')->getData() < $minBid ){
+                $request->getSession()->getFlashBag()->add('alert', "Une erreur s'est produite  Votre enchère est trop petite. L'enchère doit être au minimum de  $minBid  € .");
+            }else{
+                $bidding->setUser($this->getUser());
+                $bidding->setProduct($product);
+                $em->persist($bidding);
+                $em->flush();
+                $request->getSession()->getFlashBag()->add('notice', 'Votre enchère à bien été pris en compte');
+            }
+           //return $this->redirectToRoute('products_default_bind', array('id' => $id));
+        }
         return $this->render('default/bidding/index.html.twig', [
             'parentCategories' => $categories,
             'product'          => $product,
-            'bidding'             => $actualBidding,
-            'form'             => $form->createView()
+            'form'             => $form->createView(),
+            'history'          => $history
         ]);
     }
 }

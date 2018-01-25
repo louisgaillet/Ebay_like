@@ -38,9 +38,7 @@ class AdminController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $bindding = new Bidding();
             $product->setUser($this->getUser());
-            $product->setBindding($bindding);
             $em = $this->getDoctrine()->getManager();
             $em->persist($product);
             $em->flush();

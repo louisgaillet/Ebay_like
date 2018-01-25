@@ -13,17 +13,20 @@ use Doctrine\ORM\Mapping as ORM;
 class history_bidding
 {
 
-    /**
-     * @ORM\ManyToOne(targetEntity="ProductsBundle\Entity\Bidding")
-     * @ORM\JoinColumn(nullable=true)
-     */
 
-    private $Bidding;
 
     /**
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $User;
+
+
+    /**
+     * @ORM\ManyToOne(targetEntity="ProductsBundle\Entity\Product")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $product;
 
 
     /**
@@ -45,7 +48,7 @@ class history_bidding
     /**
      * @var int
      *
-     * @ORM\Column(name="bid", type="integer", unique=true)
+     * @ORM\Column(name="bid", type="integer")
      */
     private $bid;
 
@@ -54,6 +57,9 @@ class history_bidding
     {
         $this->date = new \DateTime();
     }
+
+
+
 
     /**
      * Get id.
@@ -114,37 +120,13 @@ class history_bidding
     }
 
     /**
-     * Set bidding.
-     *
-     * @param \ProductsBundle\Entity\Bidding|null $bidding
-     *
-     * @return history_bidding
-     */
-    public function setBidding(\ProductsBundle\Entity\Bidding $bidding = null)
-    {
-        $this->Bidding = $bidding;
-
-        return $this;
-    }
-
-    /**
-     * Get bidding.
-     *
-     * @return \ProductsBundle\Entity\Bidding|null
-     */
-    public function getBidding()
-    {
-        return $this->Bidding;
-    }
-
-    /**
      * Set user.
      *
-     * @param \AppBundle\Entity\User|null $user
+     * @param \AppBundle\Entity\User $user
      *
      * @return history_bidding
      */
-    public function setUser(\AppBundle\Entity\User $user = null)
+    public function setUser(\AppBundle\Entity\User $user)
     {
         $this->User = $user;
 
@@ -154,10 +136,34 @@ class history_bidding
     /**
      * Get user.
      *
-     * @return \AppBundle\Entity\User|null
+     * @return \AppBundle\Entity\User
      */
     public function getUser()
     {
         return $this->User;
+    }
+
+    /**
+     * Set product.
+     *
+     * @param \ProductsBundle\Entity\Product|null $product
+     *
+     * @return history_bidding
+     */
+    public function setProduct(\ProductsBundle\Entity\Product $product = null)
+    {
+        $this->product = $product;
+
+        return $this;
+    }
+
+    /**
+     * Get product.
+     *
+     * @return \ProductsBundle\Entity\Product|null
+     */
+    public function getProduct()
+    {
+        return $this->product;
     }
 }

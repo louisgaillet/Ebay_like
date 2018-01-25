@@ -10,17 +10,60 @@
 
 
             <div class="col-md-9 col-xs-12 content ">
-                <div class="block">
-                    {{ product.titre }}
-                    <div class="bidding">
-                        {{ product.dateEnd | date('d-m-Y') }}
-                        <div>Valeur : {{ product.price }}</div>
-                        <div> Actual {{ bidding.actualBid }}</div>
-                        <div>Minimum {{ product.minBid }}</div>
-                        {{ include('default/form/form_bidding.html.twig', { 'product': product , 'bidding':bidding }) }}
-                    </div>
+                <div class="block row">
+                            <div class="preview col-md-6 col-xs-12">
+                                <h1>{{ product.titre }}</h1>
+                                <div class="picture">
+                                    <img src="{{ asset('uploads/images/products/'~product.image|e )  }}" alt="{{ product.titre }}">
+                                </div>
+                                <div class="description">
+                                    {{ product.description }}
+                                </div>
+                            </div>
+                            <div class="bidding col-md-6 col-xs-12" id="bidding" data-date="{{ product.dateEnd | date('Y-m-d H:i:s') }}">
+                                {% if product.dateEnd <=  date('+1hour') %}
+                                  C'est terminé !! {{ history[history | length -1].User }} remporte l'enchère.
+                                {% else %}
+                                    <div id="countdown">
+                                        <div class="countdown"><span id="countdown_day">--</span><span class="unit">J</span></div>
+                                        <div class="countdown"><span id="countdown_hour">--</span><span class="unit">H</span></div>
+                                        <div class="countdown"><span id="countdown_min">--</span><span class="unit">Mn</span></div>
+                                        <div class="countdown"><span id="countdown_sec">--</span><span class="unit">S</span></div>
+                                    </div>
+                                    <div class="bidding-infos"><strong class="color">Valeur:</strong> {{ product.price }} €</div>
+                                    <div class="bidding-infos"><strong class="color">Enchère minimum:</strong> {{ product.minBid }}€</div>
+
+                                        {% if history|length >= 1 %}
+                                            {{ include('default/form/form_bidding.html.twig', { 'product': product , 'minimal':history[0].bid + product.minBid }) }}
+                                        {% else %}
+                                            {{ include('default/form/form_bidding.html.twig', { 'product': product , 'minimal':product.startingPrice }) }}
+                                        {% endif %}
+                                 {% endif %}
+                                    <div class="history">
+                                         {% if history is empty %}
+                                            <p>Soyez le premier</p>
+                                        {% else %}
+                                            {% for item in history %}
+                                            <div class="history-item d-flex justify-content-between">
+                                                <div>
+                                                    {{ item.bid }} €
+                                                </div>
+                                                <div class="d-flex flex-column">
+                                                    <span class="username">{{ item.user.username }}</span>
+                                                    <span class="date">{{ item.date | date('d-m-Y H:i:s', "Europe/Paris") }}</span>
+                                                 </div>
+                                            </div>
+                                            {% endfor %}
+                                        {% endif %}
+                                    </div>
+
+                            </div>
                 </div>
             <div>
         </div>
     </div>
+{% endblock %}
+
+{% block javascripts %}
+<script src="{{ asset('js/bidding/script.js') }}"></script>
 {% endblock %}

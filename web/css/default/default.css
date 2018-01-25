@@ -31,6 +31,13 @@ h1{
     color: white;
 }
 
+.btn-secondary, .btn-secondary:hover{
+    background: #FF8E64;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
 .nav_categories{
     list-style: none;
     min-height: 100vh;
@@ -137,4 +144,49 @@ img{
 
 .price {
     color: #62F9B6;
+}
+
+#countdown{
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 13px;
+}
+
+.countdown{
+    background: #62F9B6;
+    color: white;
+    padding: 13px;
+    margin: 6px;
+}
+
+.countdown .unit{
+    font-size: 0.8rem;
+    margin-left: 3px;
+}
+
+.bidding-form label{
+    display: none;
+}
+
+.bidding-infos{
+    margin: 6px 0;
+}
+
+.history {
+    border: 1px solid #e8e2e2;
+    padding: 13px;
+    margin: 37px 0;
+}
+
+.history-item{
+    margin-bottom: 13px;
+}
+.history-item .username{
+    text-align: right;
+}
+
+.history-item .date{
+    text-align: right;
+    font-size: 0.8rem;
+    color: grey;
 }

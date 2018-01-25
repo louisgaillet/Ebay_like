@@ -24,12 +24,7 @@ class Product
 
     private $User;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="ProductsBundle\Entity\Bidding", cascade={"persist"})
-     * @ORM\JoinColumn(nullable=true)
-     */
 
-    private $Bindding;
 
     /**
      * @ORM\ManyToMany(targetEntity="ProductsBundle\Entity\Category", cascade={"persist"})

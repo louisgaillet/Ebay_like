@@ -3,6 +3,7 @@
 namespace ProductsBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -49,8 +50,11 @@ class ProductType extends AbstractType
             ->add('minBid',IntegerType::class, array(
                 'label' => "Minimum de l enchère",
             ))
-            ->add('dateEnd',DateType::class, array(
-                'label' => "Date de fin de l'enchère",
+            ->add('dateEnd', DateTimeType::class, array(
+                'placeholder' => array(
+                    'year' => 'Year', 'month' => 'Month', 'day' => 'Day',
+                    'hour' => 'Hour', 'minute' => 'Minute', 'second' => 'Second',
+                )
             ))
             ->add('save', SubmitType::class, ['label' => 'Create Product']);
     }/**
