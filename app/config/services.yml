@@ -1,12 +1,9 @@
 # Learn more about services, parameters and containers at
 # https://symfony.com/doc/current/service_container.html
 parameters:
-
+    bid_manager_class: ProductsBundle\Service\BidManager
 
 services:
-
-    bidding_manager:
-            class: 'ProductsBundle\Services\biddingManager\biddingManager'
     # default configuration for services in *this* file
     _defaults:
         # automatically injects dependencies in your services
@@ -15,7 +12,13 @@ services:
         autoconfigure: true
         # this means you cannot fetch services directly from the container via $container->get()
         # if you need to do this, you can override this setting on individual services
-        public: false
+        public: true
+
+    bid_manager:
+      class : ProductsBundle\Service\BidManager
+      arguments: ["@doctrine.orm.default_entity_manager", "@security.token_storage"]
+
+
 
     # makes classes in src/AppBundle available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
@@ -32,9 +35,16 @@ services:
         public: true
         tags: ['controller.service_arguments']
 
+    ProductsBundle\:
+      resource: '../../src/ProductsBundle/*'
+      exclude: '../../src/ProductsBundle/{Entity,Repository,Tests}'
+
+    ProductsBundle\Controller\:
+            resource: '../../src/ProductsBundle/Controller'
+            public: true
+            tags: ['controller.service_arguments']
+
     # add more services, or override services that need manual wiring
     # AppBundle\Service\ExampleService:
     #     arguments:
     #         $someArgument: 'some_value'
-
-

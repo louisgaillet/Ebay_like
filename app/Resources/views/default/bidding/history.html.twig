@@ -1,0 +1,17 @@
+<div class="history">
+    {% if history is empty %}
+        <p>Soyez le premier</p>
+    {% else %}
+        {% for item in history %}
+            <div class="history-item d-flex justify-content-between">
+                <div>
+                    {{ item.bid }} €
+                </div>
+                <div class="d-flex flex-column">
+                    <span class="username">{{ item.user.username }}</span>
+                    <span class="date">{{ item.date | date('d-m-Y H:i:s', "Europe/Paris") }}</span>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+</div>

@@ -39,22 +39,19 @@
                                             {{ include('default/form/form_bidding.html.twig', { 'product': product , 'minimal':product.startingPrice }) }}
                                         {% endif %}
                                  {% endif %}
-                                    <div class="history">
-                                         {% if history is empty %}
-                                            <p>Soyez le premier</p>
-                                        {% else %}
-                                            {% for item in history %}
-                                            <div class="history-item d-flex justify-content-between">
-                                                <div>
-                                                    {{ item.bid }} €
-                                                </div>
-                                                <div class="d-flex flex-column">
-                                                    <span class="username">{{ item.user.username }}</span>
-                                                    <span class="date">{{ item.date | date('d-m-Y H:i:s', "Europe/Paris") }}</span>
-                                                 </div>
+
+
+                                    <div id="history">
+                                        <div v-for="value in results" class="history-item d-flex justify-content-between" productId-id="{{ product.id }}" >
+                                            <div>
+                                                ${ value.bid } €
                                             </div>
-                                            {% endfor %}
-                                        {% endif %}
+                                            <div class="d-flex flex-column">
+                                                <span class="username">${value.username}</span>
+                                                <span class="date">${ value.date.date  }</span>
+                                            </div>
+                                        </div>
+                                      </div>
                                     </div>
 
                             </div>
@@ -65,5 +62,31 @@
 {% endblock %}
 
 {% block javascripts %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.17.1/axios.js"></script>
 <script src="{{ asset('js/bidding/script.js') }}"></script>
+<script>
+
+
+var history = new Vue({
+    delimiters: ['${', '}'],
+  el: '#history',
+  data: {
+    results: []
+  },
+  mounted() {
+
+      var id = {{ product.id }};
+
+        axios.get("http://127.0.0.1:8000/api/bidding/"+id)
+            .then(response => {self.results = response.data})
+      var self = this;
+        setInterval(function(){
+            axios.get("http://127.0.0.1:8000/api/bidding/"+id)
+            .then(response => {self.results = response.data})
+         }, 3000);
+  }
+})
+
+Vue.config.devtools = true;
+</script>
 {% endblock %}

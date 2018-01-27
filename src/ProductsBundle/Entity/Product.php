@@ -101,6 +101,10 @@ class Product
      */
     private $dateEnd;
 
+    /**
+     * @ORM\Column(name="available", type="smallint", options={"default":0})
+     */
+    private $available;
 
 
     /**

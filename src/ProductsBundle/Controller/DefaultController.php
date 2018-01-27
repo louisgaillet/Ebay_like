@@ -8,12 +8,20 @@ use ProductsBundle\Entity\Rates;
 use ProductsBundle\Form\BiddingType;
 use ProductsBundle\Form\history_biddingType;
 use ProductsBundle\Form\RatesType;
+use ProductsBundle\ProductsBundle;
+use ProductsBundle\Repository\history_biddingRepository;
+use ProductsBundle\Service\BidManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
+use Symfony\Component\Serializer\Serializer;
 
 class DefaultController extends Controller
 {
+
     /**
      * @Route("/")
      */
@@ -95,6 +103,8 @@ class DefaultController extends Controller
      */
     public function categoriesAction(Request $request, $id)
     {
+
+
         $em = $this->getDoctrine()->getManager();
         $repository = $this->getDoctrine()->getRepository('ProductsBundle:Product');
 
@@ -124,48 +134,28 @@ class DefaultController extends Controller
     public function bindAction(Request $request, $id)
     {
 
+        $bidManager = $this->get('bid_manager');
         $em = $this->getDoctrine()->getManager();
         $categories = $em
             ->getRepository('ProductsBundle:Category')
             ->findBy(array('parent' => null));
-
         $product = $em
             ->getRepository('ProductsBundle:Product')
             ->find($id);
-
         $bidding = new history_bidding();
         $form = $this->get('form.factory')->create(history_biddingType::class, $bidding);
-
-        $history =  $em
-            ->getRepository('ProductsBundle:history_bidding')
-            ->findBy(array('product' => $product->getId()));
-        $history = array_reverse($history);
+        $history = $bidManager->getHistory($id);
 
         $form->handleRequest($request);
 
-        $minBid = $em
-            ->getRepository('ProductsBundle:history_bidding')
-            ->getlastBid($id);
 
-        if ($minBid == null)
-            $minBid = $product->getStartingPrice();
-        else{
-            $minBid = $minBid["bid"];
-        }
-        $minBid = $minBid + $product->getMinBid();
         if ($form->isSubmitted() && $form->isValid()) {
-            $biddingManager = $this->get('bidding_manager');
-            $biddingManager->setForm($form)->createForm();
-            if( $form->get('bid')->getData() < $minBid ){
-                $request->getSession()->getFlashBag()->add('alert', "Une erreur s'est produite  Votre enchère est trop petite. L'enchère doit être au minimum de  $minBid  € .");
-            }else{
-                $bidding->setUser($this->getUser());
-                $bidding->setProduct($product);
-                $em->persist($bidding);
-                $em->flush();
-                $request->getSession()->getFlashBag()->add('notice', 'Votre enchère à bien été pris en compte');
-            }
-           //return $this->redirectToRoute('products_default_bind', array('id' => $id));
+            $message = $bidManager->setForm($form)->init($id, $bidding);
+            if($message[1] != null)
+                $request->getSession()->getFlashBag()->add('danger',$message[1]);
+            if($message[0] != null)
+                $request->getSession()->getFlashBag()->add('success',$message[0]);
+            return $this->redirectToRoute('products_default_bind', array('id' => $id));
         }
         return $this->render('default/bidding/index.html.twig', [
             'parentCategories' => $categories,
@@ -173,5 +163,21 @@ class DefaultController extends Controller
             'form'             => $form->createView(),
             'history'          => $history
         ]);
+    }
+
+    /**
+     * @Route("api/bidding/{id}"), name="api-bidding")
+     *
+     */
+    public function apibindAction(Request $request, $id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $repository =  $em
+            ->getRepository('ProductsBundle:history_bidding');
+        $history = $repository->getHistory($id);
+        $response = new Response();
+        $response->setContent(json_encode( $history));
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
     }
 }
